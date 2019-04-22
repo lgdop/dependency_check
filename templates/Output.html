@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Dependency Result</title>
+	<link rel="stylesheet" href="/static/reset.css" type="text/css">
+	<link rel="stylesheet" href="/static/style1.css" type="text/css">
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/js/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+	<script src="/js/jquery-1.9.0.js"></script>
+	<script src="/js/script_output.js"></script>
+
+</head>
+
+<body>
+
+	<div class="head-conatiner">
+<!--	<dev> <img src='../static/img/a.jpg' class="image" style="float : left;width:16%;background-color:#000000;height: 98px;"></dev> -->
+		<h1 class='blink_me1'>Clarify</h1>
+		<h2 class='blink_me1'>Code Dependency Check</h2>
+	<!--	<dev> <img src='../static/img/LG.jpg' class="image" style="width:16%;background-color:#000000;height: 98px;"></dev> -->
+	</div>
+	<div class='main-container'>
+		<table class="tbl-output" border = 1 >
+            <caption style="color:#000000">Input Data</caption>
+             {% for key, value in dependency_check_output.iteritems() %}
+			 		{% if key != 'JIT' and key != 'UAT' and key != 'PROD' and key != 'Not Installed in JIT&UAT&PROD' %}
+			 		
+			<thead>
+				<tr>
+					<th>{{key}}</th>
+					<th>{{value}}</th>
+                 </tr>
+			</thead>
+			<tbody> 
+			</tbody>
+			<tfoot></tfoot>
+					{% endif %}
+            {% endfor %}
+		</table>
+		<table class="tbl-output1" border = 1 >
+            <caption style="color:#000000;text-align:center">Dependent Patches List</caption>
+             
+							
+
+			<thead>
+					<tr>
+						<th>Input RM should be installed</th>
+						<th>RM Ticket</th>
+                    	<th>Which is Currently</th>
+						
+					</tr>
+				
+			</thead>
+			{% for key, value in dependency_check_output.iteritems() %}
+			 		{% if key == 'SIT' or key == 'UAT' or key == 'PROD'%}
+					   	{% for key1,value1 in value.iteritems() %}
+			<tbody>
+					<tr> 
+							<!--{% if value1.split('-**-')[1] == 'Current'%}
+								<td style="background-color:#AC2832;color:#000000">{{value1.split('-**-')[1]}}</td>
+							{% elif value1.split('-**-')[1] != 'Current'%}	
+								<td style="background-color:#DFD297;color:#000000">{{value1.split('-**-')[1]}}</td>
+							{% endif %}	-->
+							    <td style="background-color:#DFD297;color:#000000">{{value1.split('-**-')[1]}}</td>
+								<td style="background-color:#DFD297;color:#000000" >{{key1}}</td>
+								<td style="background-color:#DFD297;color:#000000">in {{key}}</td>
+					</tr>
+			
+						{% endfor %}
+					{% elif key == 'Not Installed in JIT&UAT&PROD'%}
+						{% for key1,value1 in value.iteritems() %}
+			
+					<tr>
+						<td style="background-color:#DFD297;color:#000000">{{value1.split('-**-')[1]}}</td>
+						<td style="background-color:#DFD297;color:#000000" >{{key1}}</td>
+                    	<td style="background-color:#DFD297;color:#000000">{{key}}</td>
+					</tr>
+			
+					 {% endfor %}
+					 {% endif %}
+            {% endfor %}
+			</tbody>
+		<tfoot></tfoot>
+		</table>
+		
+		<div class="btn-container">
+		
+						
+						<button class="btn" onclick="goBack()">Home Page</button>
+						<button class="btn" onclick="CDC()">CDC Page</button>
+
+						<script>
+							function goBack() {
+								window.history.back();
+							}
+							function CDC() {
+								window.open('https://devops.upc.biz/cdc');
+							}
+						</script>
+						
+		</div>
+		
+</div>
+</body>
+
+</html>
